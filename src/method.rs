@@ -167,7 +167,7 @@ impl Method {
     }
 
     /// Return a &str representation of the HTTP method
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         match self.0 {
             Options => "OPTIONS",
@@ -186,49 +186,49 @@ impl Method {
 }
 
 impl AsRef<str> for Method {
-    #[inline]
+    
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
 
 impl<'a> PartialEq<&'a Method> for Method {
-    #[inline]
+    
     fn eq(&self, other: &&'a Method) -> bool {
         self == *other
     }
 }
 
 impl<'a> PartialEq<Method> for &'a Method {
-    #[inline]
+    
     fn eq(&self, other: &Method) -> bool {
         *self == other
     }
 }
 
 impl PartialEq<str> for Method {
-    #[inline]
+    
     fn eq(&self, other: &str) -> bool {
         self.as_ref() == other
     }
 }
 
 impl PartialEq<Method> for str {
-    #[inline]
+    
     fn eq(&self, other: &Method) -> bool {
         self == other.as_ref()
     }
 }
 
 impl<'a> PartialEq<&'a str> for Method {
-    #[inline]
+    
     fn eq(&self, other: &&'a str) -> bool {
         self.as_ref() == *other
     }
 }
 
 impl<'a> PartialEq<Method> for &'a str {
-    #[inline]
+    
     fn eq(&self, other: &Method) -> bool {
         *self == other.as_ref()
     }
@@ -247,14 +247,14 @@ impl fmt::Display for Method {
 }
 
 impl Default for Method {
-    #[inline]
+    
     fn default() -> Method {
         Method::GET
     }
 }
 
 impl<'a> From<&'a Method> for Method {
-    #[inline]
+    
     fn from(t: &'a Method) -> Self {
         t.clone()
     }
@@ -263,7 +263,7 @@ impl<'a> From<&'a Method> for Method {
 impl<'a> TryFrom<&'a [u8]> for Method {
     type Error = InvalidMethod;
 
-    #[inline]
+    
     fn try_from(t: &'a [u8]) -> Result<Self, Self::Error> {
         Method::from_bytes(t)
     }
@@ -272,7 +272,7 @@ impl<'a> TryFrom<&'a [u8]> for Method {
 impl<'a> TryFrom<&'a str> for Method {
     type Error = InvalidMethod;
 
-    #[inline]
+    
     fn try_from(t: &'a str) -> Result<Self, Self::Error> {
         TryFrom::try_from(t.as_bytes())
     }
@@ -281,7 +281,7 @@ impl<'a> TryFrom<&'a str> for Method {
 impl FromStr for Method {
     type Err = InvalidMethod;
 
-    #[inline]
+    
     fn from_str(t: &str) -> Result<Self, Self::Err> {
         TryFrom::try_from(t)
     }

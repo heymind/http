@@ -208,7 +208,7 @@ impl Request<()> {
     ///     .body(())
     ///     .unwrap();
     /// ```
-    #[inline]
+    
     pub fn builder() -> Builder {
         Builder::new()
     }
@@ -435,7 +435,7 @@ impl<T> Request<T> {
     /// assert_eq!(*request.method(), Method::GET);
     /// assert_eq!(*request.body(), "hello world");
     /// ```
-    #[inline]
+    
     pub fn new(body: T) -> Request<T> {
         Request {
             head: Parts::new(),
@@ -455,7 +455,7 @@ impl<T> Request<T> {
     ///
     /// let request = Request::from_parts(parts, body);
     /// ```
-    #[inline]
+    
     pub fn from_parts(parts: Parts, body: T) -> Request<T> {
         Request {
             head: parts,
@@ -472,7 +472,7 @@ impl<T> Request<T> {
     /// let request: Request<()> = Request::default();
     /// assert_eq!(*request.method(), Method::GET);
     /// ```
-    #[inline]
+    
     pub fn method(&self) -> &Method {
         &self.head.method
     }
@@ -487,7 +487,7 @@ impl<T> Request<T> {
     /// *request.method_mut() = Method::PUT;
     /// assert_eq!(*request.method(), Method::PUT);
     /// ```
-    #[inline]
+    
     pub fn method_mut(&mut self) -> &mut Method {
         &mut self.head.method
     }
@@ -501,7 +501,7 @@ impl<T> Request<T> {
     /// let request: Request<()> = Request::default();
     /// assert_eq!(*request.uri(), *"/");
     /// ```
-    #[inline]
+    
     pub fn uri(&self) -> &Uri {
         &self.head.uri
     }
@@ -516,7 +516,7 @@ impl<T> Request<T> {
     /// *request.uri_mut() = "/hello".parse().unwrap();
     /// assert_eq!(*request.uri(), *"/hello");
     /// ```
-    #[inline]
+    
     pub fn uri_mut(&mut self) -> &mut Uri {
         &mut self.head.uri
     }
@@ -530,7 +530,7 @@ impl<T> Request<T> {
     /// let request: Request<()> = Request::default();
     /// assert_eq!(request.version(), Version::HTTP_11);
     /// ```
-    #[inline]
+    
     pub fn version(&self) -> Version {
         self.head.version
     }
@@ -545,7 +545,7 @@ impl<T> Request<T> {
     /// *request.version_mut() = Version::HTTP_2;
     /// assert_eq!(request.version(), Version::HTTP_2);
     /// ```
-    #[inline]
+    
     pub fn version_mut(&mut self) -> &mut Version {
         &mut self.head.version
     }
@@ -559,7 +559,7 @@ impl<T> Request<T> {
     /// let request: Request<()> = Request::default();
     /// assert!(request.headers().is_empty());
     /// ```
-    #[inline]
+    
     pub fn headers(&self) -> &HeaderMap<HeaderValue> {
         &self.head.headers
     }
@@ -575,7 +575,7 @@ impl<T> Request<T> {
     /// request.headers_mut().insert(HOST, HeaderValue::from_static("world"));
     /// assert!(!request.headers().is_empty());
     /// ```
-    #[inline]
+    
     pub fn headers_mut(&mut self) -> &mut HeaderMap<HeaderValue> {
         &mut self.head.headers
     }
@@ -589,7 +589,7 @@ impl<T> Request<T> {
     /// let request: Request<()> = Request::default();
     /// assert!(request.extensions().get::<i32>().is_none());
     /// ```
-    #[inline]
+    
     pub fn extensions(&self) -> &Extensions {
         &self.head.extensions
     }
@@ -605,7 +605,7 @@ impl<T> Request<T> {
     /// request.extensions_mut().insert("hello");
     /// assert_eq!(request.extensions().get(), Some(&"hello"));
     /// ```
-    #[inline]
+    
     pub fn extensions_mut(&mut self) -> &mut Extensions {
         &mut self.head.extensions
     }
@@ -619,7 +619,7 @@ impl<T> Request<T> {
     /// let request: Request<String> = Request::default();
     /// assert!(request.body().is_empty());
     /// ```
-    #[inline]
+    
     pub fn body(&self) -> &T {
         &self.body
     }
@@ -634,7 +634,7 @@ impl<T> Request<T> {
     /// request.body_mut().push_str("hello world");
     /// assert!(!request.body().is_empty());
     /// ```
-    #[inline]
+    
     pub fn body_mut(&mut self) -> &mut T {
         &mut self.body
     }
@@ -649,7 +649,7 @@ impl<T> Request<T> {
     /// let body = request.into_body();
     /// assert_eq!(body, 10);
     /// ```
-    #[inline]
+    
     pub fn into_body(self) -> T {
         self.body
     }
@@ -664,7 +664,7 @@ impl<T> Request<T> {
     /// let (parts, body) = request.into_parts();
     /// assert_eq!(parts.method, Method::GET);
     /// ```
-    #[inline]
+    
     pub fn into_parts(self) -> (Parts, T) {
         (self.head, self.body)
     }
@@ -683,7 +683,7 @@ impl<T> Request<T> {
     /// });
     /// assert_eq!(mapped_request.body(), &"some string".as_bytes());
     /// ```
-    #[inline]
+    
     pub fn map<F, U>(self, f: F) -> Request<U>
     where
         F: FnOnce(T) -> U,
@@ -754,7 +754,7 @@ impl Builder {
     ///     .body(())
     ///     .unwrap();
     /// ```
-    #[inline]
+    
     pub fn new() -> Builder {
         Builder::default()
     }
@@ -1053,7 +1053,7 @@ impl Builder {
 }
 
 impl Default for Builder {
-    #[inline]
+    
     fn default() -> Builder {
         Builder {
             inner: Ok(Parts::new()),

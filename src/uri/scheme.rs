@@ -53,7 +53,7 @@ impl Scheme {
     /// let scheme: Scheme = "http".parse().unwrap();
     /// assert_eq!(scheme.as_str(), "http");
     /// ```
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         use self::Protocol::*;
         use self::Scheme2::*;
@@ -69,7 +69,7 @@ impl Scheme {
 
 impl<'a> TryFrom<&'a [u8]> for Scheme {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
         use self::Scheme2::*;
 
@@ -91,7 +91,7 @@ impl<'a> TryFrom<&'a [u8]> for Scheme {
 
 impl<'a> TryFrom<&'a str> for Scheme {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
@@ -118,7 +118,7 @@ impl fmt::Display for Scheme {
 }
 
 impl AsRef<str> for Scheme {
-    #[inline]
+    
     fn as_ref(&self) -> &str {
         self.as_str()
     }

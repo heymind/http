@@ -1135,7 +1135,7 @@ impl<T> HeaderMap<T> {
         key.insert(self, val)
     }
 
-    #[inline]
+    
     fn insert2<K>(&mut self, key: K, value: T) -> Option<T>
     where
         K: Hash + Into<HeaderName>,
@@ -1169,7 +1169,7 @@ impl<T> HeaderMap<T> {
     }
 
     /// Set an occupied bucket to the given value
-    #[inline]
+    
     fn insert_occupied(&mut self, index: usize, value: T) -> T {
         if let Some(links) = self.entries[index].links {
             self.remove_all_extra_values(links.next);
@@ -1238,7 +1238,7 @@ impl<T> HeaderMap<T> {
         key.append(self, value)
     }
 
-    #[inline]
+    
     fn append2<K>(&mut self, key: K, value: T) -> bool
     where
         K: Hash + Into<HeaderName>,
@@ -1275,7 +1275,7 @@ impl<T> HeaderMap<T> {
         )
     }
 
-    #[inline]
+    
     fn find<K: ?Sized>(&self, key: &K) -> Option<(usize, usize)>
     where
         K: Hash + Into<HeaderName>,
@@ -1307,7 +1307,6 @@ impl<T> HeaderMap<T> {
     }
 
     /// phase 2 is post-insert where we forward-shift `Pos` in the indices.
-    #[inline]
     fn insert_phase_two(
         &mut self,
         key: HeaderName,
@@ -1373,7 +1372,7 @@ impl<T> HeaderMap<T> {
     /// Warning: To avoid inconsistent state, extra values _must_ be removed
     /// for the `found` index (via `remove_all_extra_values` or similar)
     /// _before_ this method is called.
-    #[inline]
+    
     fn remove_found(&mut self, probe: usize, found: usize) -> Bucket<T> {
         // index `probe` and entry `found` is to be removed
         // use swap_remove, but then we need to update the index that points
@@ -1430,7 +1429,7 @@ impl<T> HeaderMap<T> {
     }
 
     /// Removes the `ExtraValue` at the given index.
-    #[inline]
+    
     fn remove_extra_value(&mut self, idx: usize) -> ExtraValue<T> {
         let raw_links = self.raw_links();
         remove_extra_value(raw_links, &mut self.extra_values, idx)
@@ -1448,7 +1447,7 @@ impl<T> HeaderMap<T> {
         }
     }
 
-    #[inline]
+    
     fn insert_entry(&mut self, hash: HashValue, key: HeaderName, value: T) {
         assert!(self.entries.len() < MAX_SIZE, "header map at capacity");
 
@@ -1545,7 +1544,7 @@ impl<T> HeaderMap<T> {
         }
     }
 
-    #[inline]
+    
     fn grow(&mut self, new_raw_cap: usize) {
         assert!(new_raw_cap <= MAX_SIZE, "requested capacity too large");
         // This path can never be reached when handling the first allocation in
@@ -1584,14 +1583,14 @@ impl<T> HeaderMap<T> {
         self.entries.reserve_exact(more);
     }
 
-    #[inline]
+    
     fn raw_links(&mut self) -> RawLinks<T> {
         RawLinks(&mut self.entries[..] as *mut _)
     }
 }
 
 /// Removes the `ExtraValue` at the given index.
-#[inline]
+
 fn remove_extra_value<T>(
     mut raw_links: RawLinks<T>,
     extra_values: &mut Vec<ExtraValue<T>>,
@@ -1995,7 +1994,7 @@ where
 
     /// # Panics
     /// Using the index operator will cause a panic if the header you're querying isn't set.
-    #[inline]
+    
     fn index(&self, index: K) -> &T {
         match self.get2(&index) {
             Some(val) => val,
@@ -2007,7 +2006,7 @@ where
 /// phase 2 is post-insert where we forward-shift `Pos` in the indices.
 ///
 /// returns the number of displaced elements
-#[inline]
+
 fn do_insert_phase_two(indices: &mut [Pos], mut probe: usize, mut old_pos: Pos) -> usize {
     let mut num_displaced = 0;
 
@@ -2026,7 +2025,7 @@ fn do_insert_phase_two(indices: &mut [Pos], mut probe: usize, mut old_pos: Pos) 
     num_displaced
 }
 
-#[inline]
+
 fn append_value<T>(
     entry_idx: usize,
     entry: &mut Bucket<T>,
@@ -3137,7 +3136,7 @@ impl<T> ops::IndexMut<usize> for RawLinks<T> {
 // ===== impl Pos =====
 
 impl Pos {
-    #[inline]
+    
     fn new(index: usize, hash: HashValue) -> Self {
         debug_assert!(index < MAX_SIZE);
         Pos {
@@ -3146,7 +3145,7 @@ impl Pos {
         }
     }
 
-    #[inline]
+    
     fn none() -> Self {
         Pos {
             index: !0,
@@ -3154,17 +3153,17 @@ impl Pos {
         }
     }
 
-    #[inline]
+    
     fn is_some(&self) -> bool {
         !self.is_none()
     }
 
-    #[inline]
+    
     fn is_none(&self) -> bool {
         self.index == !0
     }
 
-    #[inline]
+    
     fn resolve(&self) -> Option<(usize, HashValue)> {
         if self.is_some() {
             Some((self.index as usize, self.hash))
@@ -3211,23 +3210,23 @@ impl Danger {
 
 // ===== impl Utils =====
 
-#[inline]
+
 fn usable_capacity(cap: usize) -> usize {
     cap - cap / 4
 }
 
-#[inline]
+
 fn to_raw_capacity(n: usize) -> usize {
     n + n / 3
 }
 
-#[inline]
+
 fn desired_pos(mask: Size, hash: HashValue) -> usize {
     (hash.0 & mask) as usize
 }
 
 /// The number of steps that `current` is forward of the desired position for hash
-#[inline]
+
 fn probe_distance(mask: Size, hash: HashValue, current: usize) -> usize {
     current.wrapping_sub(desired_pos(mask, hash)) & mask as usize
 }
@@ -3294,19 +3293,19 @@ mod into_header_name {
 
     impl Sealed for HeaderName {
         #[doc(hidden)]
-        #[inline]
+        
         fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
             map.insert2(self, val)
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
             map.append2(self, val)
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
             map.entry2(self)
         }
@@ -3316,18 +3315,18 @@ mod into_header_name {
 
     impl<'a> Sealed for &'a HeaderName {
         #[doc(hidden)]
-        #[inline]
+        
         fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
             map.insert2(self, val)
         }
         #[doc(hidden)]
-        #[inline]
+        
         fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
             map.append2(self, val)
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
             map.entry2(self)
         }
@@ -3337,18 +3336,18 @@ mod into_header_name {
 
     impl Sealed for &'static str {
         #[doc(hidden)]
-        #[inline]
+        
         fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
             HdrName::from_static(self, move |hdr| map.insert2(hdr, val))
         }
         #[doc(hidden)]
-        #[inline]
+        
         fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
             HdrName::from_static(self, move |hdr| map.append2(hdr, val))
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
             HdrName::from_static(self, move |hdr| map.entry2(hdr))
         }
@@ -3387,13 +3386,13 @@ mod as_header_name {
 
     impl Sealed for HeaderName {
         #[doc(hidden)]
-        #[inline]
+        
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
             Ok(map.entry2(self))
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)> {
             map.find(self)
         }
@@ -3408,13 +3407,13 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a HeaderName {
         #[doc(hidden)]
-        #[inline]
+        
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
             Ok(map.entry2(self))
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)> {
             map.find(*self)
         }
@@ -3429,13 +3428,13 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a str {
         #[doc(hidden)]
-        #[inline]
+        
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
             HdrName::from_bytes(self.as_bytes(), move |hdr| map.entry2(hdr))
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)> {
             HdrName::from_bytes(self.as_bytes(), move |hdr| map.find(&hdr)).unwrap_or(None)
         }
@@ -3450,13 +3449,13 @@ mod as_header_name {
 
     impl Sealed for String {
         #[doc(hidden)]
-        #[inline]
+        
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
             self.as_str().try_entry(map)
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)> {
             Sealed::find(&self.as_str(), map)
         }
@@ -3471,13 +3470,13 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a String {
         #[doc(hidden)]
-        #[inline]
+        
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
             self.as_str().try_entry(map)
         }
 
         #[doc(hidden)]
-        #[inline]
+        
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)> {
             Sealed::find(*self, map)
         }

@@ -353,13 +353,13 @@ impl Uri {
     /// assert!(parts.scheme.is_none());
     /// assert!(parts.authority.is_none());
     /// ```
-    #[inline]
+    
     pub fn into_parts(self) -> Parts {
         self.into()
     }
 
     /// Returns the path & query components of the Uri
-    #[inline]
+    
     pub fn path_and_query(&self) -> Option<&PathAndQuery> {
         if !self.scheme.inner.is_none() || self.authority.data.is_empty() {
             Some(&self.path_and_query)
@@ -402,7 +402,7 @@ impl Uri {
     ///
     /// assert_eq!(uri.path(), "/hello/world");
     /// ```
-    #[inline]
+    
     pub fn path(&self) -> &str {
         if self.has_path() {
             self.path_and_query.path()
@@ -446,7 +446,7 @@ impl Uri {
     ///
     /// assert!(uri.scheme().is_none());
     /// ```
-    #[inline]
+    
     pub fn scheme(&self) -> Option<&Scheme> {
         if self.scheme.inner.is_none() {
             None
@@ -465,7 +465,7 @@ impl Uri {
     ///
     /// assert_eq!(uri.scheme_str(), Some("http"));
     /// ```
-    #[inline]
+    
     pub fn scheme_str(&self) -> Option<&str> {
         if self.scheme.inner.is_none() {
             None
@@ -513,7 +513,7 @@ impl Uri {
     ///
     /// assert!(uri.authority().is_none());
     /// ```
-    #[inline]
+    
     pub fn authority(&self) -> Option<&Authority> {
         if self.authority.data.is_empty() {
             None
@@ -555,7 +555,7 @@ impl Uri {
     ///
     /// assert!(uri.host().is_none());
     /// ```
-    #[inline]
+    
     pub fn host(&self) -> Option<&str> {
         self.authority().map(|a| a.host())
     }
@@ -665,7 +665,7 @@ impl Uri {
     ///
     /// assert!(uri.query().is_none());
     /// ```
-    #[inline]
+    
     pub fn query(&self) -> Option<&str> {
         self.path_and_query.query()
     }
@@ -678,7 +678,7 @@ impl Uri {
 impl<'a> TryFrom<&'a [u8]> for Uri {
     type Error = InvalidUri;
 
-    #[inline]
+    
     fn try_from(t: &'a [u8]) -> Result<Self, Self::Error> {
         Uri::from_shared(Bytes::copy_from_slice(t))
     }
@@ -687,7 +687,7 @@ impl<'a> TryFrom<&'a [u8]> for Uri {
 impl<'a> TryFrom<&'a str> for Uri {
     type Error = InvalidUri;
 
-    #[inline]
+    
     fn try_from(t: &'a str) -> Result<Self, Self::Error> {
         t.parse()
     }
@@ -696,7 +696,7 @@ impl<'a> TryFrom<&'a str> for Uri {
 impl<'a> TryFrom<&'a String> for Uri {
     type Error = InvalidUri;
 
-    #[inline]
+    
     fn try_from(t: &'a String) -> Result<Self, Self::Error> {
         t.parse()
     }
@@ -705,7 +705,7 @@ impl<'a> TryFrom<&'a String> for Uri {
 impl TryFrom<String> for Uri {
     type Error = InvalidUri;
 
-    #[inline]
+    
     fn try_from(t: String) -> Result<Self, Self::Error> {
         Uri::from_shared(Bytes::from(t))
     }
@@ -714,7 +714,7 @@ impl TryFrom<String> for Uri {
 impl TryFrom<Parts> for Uri {
     type Error = InvalidUriParts;
 
-    #[inline]
+    
     fn try_from(src: Parts) -> Result<Self, Self::Error> {
         Uri::from_parts(src)
     }
@@ -723,7 +723,7 @@ impl TryFrom<Parts> for Uri {
 impl<'a> TryFrom<&'a Uri> for Uri {
     type Error = crate::Error;
 
-    #[inline]
+    
     fn try_from(src: &'a Uri) -> Result<Self, Self::Error> {
         Ok(src.clone())
     }
@@ -854,7 +854,7 @@ fn parse_full(mut s: Bytes) -> Result<Uri, InvalidUri> {
 impl FromStr for Uri {
     type Err = InvalidUri;
 
-    #[inline]
+    
     fn from_str(s: &str) -> Result<Uri, InvalidUri> {
         Uri::try_from(s.as_bytes())
     }
@@ -983,7 +983,7 @@ impl Eq for Uri {}
 
 /// Returns a `Uri` representing `/`
 impl Default for Uri {
-    #[inline]
+    
     fn default() -> Uri {
         Uri {
             scheme: Scheme::empty(),

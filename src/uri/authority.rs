@@ -191,7 +191,7 @@ impl Authority {
     ///
     /// assert_eq!(authority.host(), "example.org");
     /// ```
-    #[inline]
+    
     pub fn host(&self) -> &str {
         host(self.as_str())
     }
@@ -253,7 +253,7 @@ impl Authority {
     }
 
     /// Return a str representation of the authority
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         &self.data[..]
     }
@@ -424,7 +424,7 @@ impl Hash for Authority {
 
 impl<'a> TryFrom<&'a [u8]> for Authority {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
         // parse first, and only turn into Bytes if valid
 
@@ -436,7 +436,7 @@ impl<'a> TryFrom<&'a [u8]> for Authority {
 
 impl<'a> TryFrom<&'a str> for Authority {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }

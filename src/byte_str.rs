@@ -9,7 +9,7 @@ pub(crate) struct ByteStr {
 }
 
 impl ByteStr {
-    #[inline]
+    
     pub fn new() -> ByteStr {
         ByteStr {
             // Invariant: the empty slice is trivially valid UTF-8.
@@ -17,7 +17,7 @@ impl ByteStr {
         }
     }
 
-    #[inline]
+    
     pub fn from_static(val: &'static str) -> ByteStr {
         ByteStr {
             // Invariant: val is a str so contains vaid UTF-8.
@@ -25,7 +25,7 @@ impl ByteStr {
         }
     }
 
-    #[inline]
+    
     /// ## Panics
     /// In a debug build this will panic if `bytes` is not valid UTF-8.
     ///
@@ -50,7 +50,7 @@ impl ByteStr {
 impl ops::Deref for ByteStr {
     type Target = str;
 
-    #[inline]
+    
     fn deref(&self) -> &str {
         let b: &[u8] = self.bytes.as_ref();
         // Safety: the invariant of `bytes` is that it contains valid UTF-8.
@@ -59,7 +59,7 @@ impl ops::Deref for ByteStr {
 }
 
 impl From<String> for ByteStr {
-    #[inline]
+    
     fn from(src: String) -> ByteStr {
         ByteStr {
             // Invariant: src is a String so contains valid UTF-8.
@@ -69,7 +69,7 @@ impl From<String> for ByteStr {
 }
 
 impl<'a> From<&'a str> for ByteStr {
-    #[inline]
+    
     fn from(src: &'a str) -> ByteStr {
         ByteStr {
             // Invariant: src is a str so contains valid UTF-8.

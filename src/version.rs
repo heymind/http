@@ -53,7 +53,7 @@ enum Http {
 }
 
 impl Default for Version {
-    #[inline]
+    
     fn default() -> Version {
         Version::HTTP_11
     }

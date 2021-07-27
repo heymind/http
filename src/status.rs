@@ -69,7 +69,7 @@ impl StatusCode {
     /// let err = StatusCode::from_u16(99);
     /// assert!(err.is_err());
     /// ```
-    #[inline]
+    
     pub fn from_u16(src: u16) -> Result<StatusCode, InvalidStatusCode> {
         if src < 100 || src >= 1000 {
             return Err(InvalidStatusCode::new());
@@ -115,7 +115,7 @@ impl StatusCode {
     /// let status = http::StatusCode::OK;
     /// assert_eq!(status.as_u16(), 200);
     /// ```
-    #[inline]
+    
     pub fn as_u16(&self) -> u16 {
         (*self).into()
     }
@@ -131,7 +131,7 @@ impl StatusCode {
     /// let status = http::StatusCode::OK;
     /// assert_eq!(status.as_str(), "200");
     /// ```
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         let offset = (self.0.get() - 100) as usize;
         let offset = offset * 3;
@@ -169,31 +169,31 @@ impl StatusCode {
     }
 
     /// Check if status is within 100-199.
-    #[inline]
+    
     pub fn is_informational(&self) -> bool {
         200 > self.0.get() && self.0.get() >= 100
     }
 
     /// Check if status is within 200-299.
-    #[inline]
+    
     pub fn is_success(&self) -> bool {
         300 > self.0.get() && self.0.get() >= 200
     }
 
     /// Check if status is within 300-399.
-    #[inline]
+    
     pub fn is_redirection(&self) -> bool {
         400 > self.0.get() && self.0.get() >= 300
     }
 
     /// Check if status is within 400-499.
-    #[inline]
+    
     pub fn is_client_error(&self) -> bool {
         500 > self.0.get() && self.0.get() >= 400
     }
 
     /// Check if status is within 500-599.
-    #[inline]
+    
     pub fn is_server_error(&self) -> bool {
         600 > self.0.get() && self.0.get() >= 500
     }
@@ -225,28 +225,28 @@ impl fmt::Display for StatusCode {
 }
 
 impl Default for StatusCode {
-    #[inline]
+    
     fn default() -> StatusCode {
         StatusCode::OK
     }
 }
 
 impl PartialEq<u16> for StatusCode {
-    #[inline]
+    
     fn eq(&self, other: &u16) -> bool {
         self.as_u16() == *other
     }
 }
 
 impl PartialEq<StatusCode> for u16 {
-    #[inline]
+    
     fn eq(&self, other: &StatusCode) -> bool {
         *self == other.as_u16()
     }
 }
 
 impl From<StatusCode> for u16 {
-    #[inline]
+    
     fn from(status: StatusCode) -> u16 {
         status.0.get()
     }
@@ -261,7 +261,7 @@ impl FromStr for StatusCode {
 }
 
 impl<'a> From<&'a StatusCode> for StatusCode {
-    #[inline]
+    
     fn from(t: &'a StatusCode) -> Self {
         t.clone()
     }
@@ -270,7 +270,7 @@ impl<'a> From<&'a StatusCode> for StatusCode {
 impl<'a> TryFrom<&'a [u8]> for StatusCode {
     type Error = InvalidStatusCode;
 
-    #[inline]
+    
     fn try_from(t: &'a [u8]) -> Result<Self, Self::Error> {
         StatusCode::from_bytes(t)
     }
@@ -279,7 +279,7 @@ impl<'a> TryFrom<&'a [u8]> for StatusCode {
 impl<'a> TryFrom<&'a str> for StatusCode {
     type Error = InvalidStatusCode;
 
-    #[inline]
+    
     fn try_from(t: &'a str) -> Result<Self, Self::Error> {
         t.parse()
     }
@@ -288,7 +288,7 @@ impl<'a> TryFrom<&'a str> for StatusCode {
 impl TryFrom<u16> for StatusCode {
     type Error = InvalidStatusCode;
 
-    #[inline]
+    
     fn try_from(t: u16) -> Result<Self, Self::Error> {
         StatusCode::from_u16(t)
     }

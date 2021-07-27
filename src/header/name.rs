@@ -82,7 +82,7 @@ macro_rules! standard_headers {
         )+
 
         impl StandardHeader {
-            #[inline]
+            
             fn as_str(&self) -> &'static str {
                 match *self {
                     $(
@@ -1793,7 +1793,7 @@ impl HeaderName {
     /// Returns a `str` representation of the header.
     ///
     /// The returned string will always be lower case.
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         match self.inner {
             Repr::Standard(v) => v.as_str(),
@@ -1870,7 +1870,7 @@ where
 }
 
 impl From<Custom> for Bytes {
-    #[inline]
+    
     fn from(Custom(inner): Custom) -> Bytes {
         Bytes::from(inner)
     }
@@ -1878,7 +1878,7 @@ impl From<Custom> for Bytes {
 
 impl<'a> TryFrom<&'a str> for HeaderName {
     type Error = InvalidHeaderName;
-    #[inline]
+    
     fn try_from(s: &'a str) -> Result<Self, Self::Error> {
         Self::from_bytes(s.as_bytes())
     }
@@ -1886,7 +1886,7 @@ impl<'a> TryFrom<&'a str> for HeaderName {
 
 impl<'a> TryFrom<&'a String> for HeaderName {
     type Error = InvalidHeaderName;
-    #[inline]
+    
     fn try_from(s: &'a String) -> Result<Self, Self::Error> {
         Self::from_bytes(s.as_bytes())
     }
@@ -1894,7 +1894,7 @@ impl<'a> TryFrom<&'a String> for HeaderName {
 
 impl<'a> TryFrom<&'a [u8]> for HeaderName {
     type Error = InvalidHeaderName;
-    #[inline]
+    
     fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
         Self::from_bytes(s)
     }
@@ -1919,14 +1919,14 @@ impl From<Custom> for HeaderName {
 }
 
 impl<'a> PartialEq<&'a HeaderName> for HeaderName {
-    #[inline]
+    
     fn eq(&self, other: &&'a HeaderName) -> bool {
         *self == **other
     }
 }
 
 impl<'a> PartialEq<HeaderName> for &'a HeaderName {
-    #[inline]
+    
     fn eq(&self, other: &HeaderName) -> bool {
         *other == *self
     }
@@ -1945,7 +1945,7 @@ impl PartialEq<str> for HeaderName {
     /// assert_eq!(CONTENT_LENGTH, "Content-Length");
     /// assert_ne!(CONTENT_LENGTH, "content length");
     /// ```
-    #[inline]
+    
     fn eq(&self, other: &str) -> bool {
         eq_ignore_ascii_case(self.as_ref(), other.as_bytes())
     }
@@ -1964,7 +1964,7 @@ impl PartialEq<HeaderName> for str {
     /// assert_eq!(CONTENT_LENGTH, "Content-Length");
     /// assert_ne!(CONTENT_LENGTH, "content length");
     /// ```
-    #[inline]
+    
     fn eq(&self, other: &HeaderName) -> bool {
         *other == *self
     }
@@ -1973,7 +1973,7 @@ impl PartialEq<HeaderName> for str {
 impl<'a> PartialEq<&'a str> for HeaderName {
     /// Performs a case-insensitive comparison of the string against the header
     /// name
-    #[inline]
+    
     fn eq(&self, other: &&'a str) -> bool {
         *self == **other
     }
@@ -1982,7 +1982,7 @@ impl<'a> PartialEq<&'a str> for HeaderName {
 impl<'a> PartialEq<HeaderName> for &'a str {
     /// Performs a case-insensitive comparison of the string against the header
     /// name
-    #[inline]
+    
     fn eq(&self, other: &HeaderName) -> bool {
         *other == *self
     }
@@ -2075,7 +2075,7 @@ impl<'a> From<HdrName<'a>> for HeaderName {
 
 #[doc(hidden)]
 impl<'a> PartialEq<HdrName<'a>> for HeaderName {
-    #[inline]
+    
     fn eq(&self, other: &HdrName<'a>) -> bool {
         match self.inner {
             Repr::Standard(a) => match other.inner {
@@ -2099,7 +2099,7 @@ impl<'a> PartialEq<HdrName<'a>> for HeaderName {
 // ===== Custom =====
 
 impl Hash for Custom {
-    #[inline]
+    
     fn hash<H: Hasher>(&self, hasher: &mut H) {
         hasher.write(self.0.as_bytes())
     }
@@ -2108,7 +2108,7 @@ impl Hash for Custom {
 // ===== MaybeLower =====
 
 impl<'a> Hash for MaybeLower<'a> {
-    #[inline]
+    
     fn hash<H: Hasher>(&self, hasher: &mut H) {
         if self.lower {
             hasher.write(self.buf);
@@ -2121,7 +2121,7 @@ impl<'a> Hash for MaybeLower<'a> {
 }
 
 // Assumes that the left hand side is already lower case
-#[inline]
+
 fn eq_ignore_ascii_case(lower: &[u8], s: &[u8]) -> bool {
     if lower.len() != s.len() {
         return false;

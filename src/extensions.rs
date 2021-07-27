@@ -16,12 +16,12 @@ impl Hasher for IdHasher {
         unreachable!("TypeId calls write_u64");
     }
 
-    #[inline]
+    
     fn write_u64(&mut self, id: u64) {
         self.0 = id;
     }
 
-    #[inline]
+    
     fn finish(&self) -> u64 {
         self.0
     }
@@ -40,7 +40,7 @@ pub struct Extensions {
 
 impl Extensions {
     /// Create an empty `Extensions`.
-    #[inline]
+    
     pub fn new() -> Extensions {
         Extensions { map: None }
     }
@@ -162,7 +162,7 @@ impl Extensions {
     ///
     /// assert!(ext.get::<i32>().is_none());
     /// ```
-    #[inline]
+    
     pub fn clear(&mut self) {
         if let Some(ref mut map) = self.map {
             map.clear();

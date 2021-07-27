@@ -120,7 +120,7 @@ impl PathAndQuery {
     /// assert_eq!(v.path(), "/hello");
     /// assert_eq!(v.query(), Some("world"));
     /// ```
-    #[inline]
+    
     pub fn from_static(src: &'static str) -> Self {
         let src = Bytes::from_static(src.as_bytes());
 
@@ -185,7 +185,7 @@ impl PathAndQuery {
     ///
     /// assert_eq!(path_and_query.path(), "/hello/world");
     /// ```
-    #[inline]
+    
     pub fn path(&self) -> &str {
         let ret = if self.query == NONE {
             &self.data[..]
@@ -234,7 +234,7 @@ impl PathAndQuery {
     ///
     /// assert!(path_and_query.query().is_none());
     /// ```
-    #[inline]
+    
     pub fn query(&self) -> Option<&str> {
         if self.query == NONE {
             None
@@ -265,7 +265,7 @@ impl PathAndQuery {
     ///
     /// assert_eq!(path_and_query.as_str(), "/hello/world");
     /// ```
-    #[inline]
+    
     pub fn as_str(&self) -> &str {
         let ret = &self.data[..];
         if ret.is_empty() {
@@ -277,7 +277,7 @@ impl PathAndQuery {
 
 impl<'a> TryFrom<&'a [u8]> for PathAndQuery {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
         PathAndQuery::from_shared(Bytes::copy_from_slice(s))
     }
@@ -285,7 +285,7 @@ impl<'a> TryFrom<&'a [u8]> for PathAndQuery {
 
 impl<'a> TryFrom<&'a str> for PathAndQuery {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &'a str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
@@ -293,7 +293,7 @@ impl<'a> TryFrom<&'a str> for PathAndQuery {
 
 impl TryFrom<String> for PathAndQuery {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: String) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
@@ -301,7 +301,7 @@ impl TryFrom<String> for PathAndQuery {
 
 impl TryFrom<&String> for PathAndQuery {
     type Error = InvalidUri;
-    #[inline]
+    
     fn try_from(s: &String) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
@@ -309,7 +309,7 @@ impl TryFrom<&String> for PathAndQuery {
 
 impl FromStr for PathAndQuery {
     type Err = InvalidUri;
-    #[inline]
+    
     fn from_str(s: &str) -> Result<Self, InvalidUri> {
         TryFrom::try_from(s)
     }
@@ -337,7 +337,7 @@ impl fmt::Display for PathAndQuery {
 // ===== PartialEq / PartialOrd =====
 
 impl PartialEq for PathAndQuery {
-    #[inline]
+    
     fn eq(&self, other: &PathAndQuery) -> bool {
         self.data == other.data
     }
@@ -346,91 +346,91 @@ impl PartialEq for PathAndQuery {
 impl Eq for PathAndQuery {}
 
 impl PartialEq<str> for PathAndQuery {
-    #[inline]
+    
     fn eq(&self, other: &str) -> bool {
         self.as_str() == other
     }
 }
 
 impl<'a> PartialEq<PathAndQuery> for &'a str {
-    #[inline]
+    
     fn eq(&self, other: &PathAndQuery) -> bool {
         self == &other.as_str()
     }
 }
 
 impl<'a> PartialEq<&'a str> for PathAndQuery {
-    #[inline]
+    
     fn eq(&self, other: &&'a str) -> bool {
         self.as_str() == *other
     }
 }
 
 impl PartialEq<PathAndQuery> for str {
-    #[inline]
+    
     fn eq(&self, other: &PathAndQuery) -> bool {
         self == other.as_str()
     }
 }
 
 impl PartialEq<String> for PathAndQuery {
-    #[inline]
+    
     fn eq(&self, other: &String) -> bool {
         self.as_str() == other.as_str()
     }
 }
 
 impl PartialEq<PathAndQuery> for String {
-    #[inline]
+    
     fn eq(&self, other: &PathAndQuery) -> bool {
         self.as_str() == other.as_str()
     }
 }
 
 impl PartialOrd for PathAndQuery {
-    #[inline]
+    
     fn partial_cmp(&self, other: &PathAndQuery) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(other.as_str())
     }
 }
 
 impl PartialOrd<str> for PathAndQuery {
-    #[inline]
+    
     fn partial_cmp(&self, other: &str) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(other)
     }
 }
 
 impl PartialOrd<PathAndQuery> for str {
-    #[inline]
+    
     fn partial_cmp(&self, other: &PathAndQuery) -> Option<cmp::Ordering> {
         self.partial_cmp(other.as_str())
     }
 }
 
 impl<'a> PartialOrd<&'a str> for PathAndQuery {
-    #[inline]
+    
     fn partial_cmp(&self, other: &&'a str) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(*other)
     }
 }
 
 impl<'a> PartialOrd<PathAndQuery> for &'a str {
-    #[inline]
+    
     fn partial_cmp(&self, other: &PathAndQuery) -> Option<cmp::Ordering> {
         self.partial_cmp(&other.as_str())
     }
 }
 
 impl PartialOrd<String> for PathAndQuery {
-    #[inline]
+    
     fn partial_cmp(&self, other: &String) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(other.as_str())
     }
 }
 
 impl PartialOrd<PathAndQuery> for String {
-    #[inline]
+    
     fn partial_cmp(&self, other: &PathAndQuery) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(other.as_str())
     }

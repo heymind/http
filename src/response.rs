@@ -226,7 +226,7 @@ impl Response<()> {
     ///     .body(())
     ///     .unwrap();
     /// ```
-    #[inline]
+    
     pub fn builder() -> Builder {
         Builder::new()
     }
@@ -247,7 +247,7 @@ impl<T> Response<T> {
     /// assert_eq!(response.status(), StatusCode::OK);
     /// assert_eq!(*response.body(), "hello world");
     /// ```
-    #[inline]
+    
     pub fn new(body: T) -> Response<T> {
         Response {
             head: Parts::new(),
@@ -270,7 +270,7 @@ impl<T> Response<T> {
     /// assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     /// assert_eq!(*response.body(), "hello world");
     /// ```
-    #[inline]
+    
     pub fn from_parts(parts: Parts, body: T) -> Response<T> {
         Response {
             head: parts,
@@ -287,7 +287,7 @@ impl<T> Response<T> {
     /// let response: Response<()> = Response::default();
     /// assert_eq!(response.status(), StatusCode::OK);
     /// ```
-    #[inline]
+    
     pub fn status(&self) -> StatusCode {
         self.head.status
     }
@@ -302,7 +302,7 @@ impl<T> Response<T> {
     /// *response.status_mut() = StatusCode::CREATED;
     /// assert_eq!(response.status(), StatusCode::CREATED);
     /// ```
-    #[inline]
+    
     pub fn status_mut(&mut self) -> &mut StatusCode {
         &mut self.head.status
     }
@@ -316,7 +316,7 @@ impl<T> Response<T> {
     /// let response: Response<()> = Response::default();
     /// assert_eq!(response.version(), Version::HTTP_11);
     /// ```
-    #[inline]
+    
     pub fn version(&self) -> Version {
         self.head.version
     }
@@ -331,7 +331,7 @@ impl<T> Response<T> {
     /// *response.version_mut() = Version::HTTP_2;
     /// assert_eq!(response.version(), Version::HTTP_2);
     /// ```
-    #[inline]
+    
     pub fn version_mut(&mut self) -> &mut Version {
         &mut self.head.version
     }
@@ -345,7 +345,7 @@ impl<T> Response<T> {
     /// let response: Response<()> = Response::default();
     /// assert!(response.headers().is_empty());
     /// ```
-    #[inline]
+    
     pub fn headers(&self) -> &HeaderMap<HeaderValue> {
         &self.head.headers
     }
@@ -361,7 +361,7 @@ impl<T> Response<T> {
     /// response.headers_mut().insert(HOST, HeaderValue::from_static("world"));
     /// assert!(!response.headers().is_empty());
     /// ```
-    #[inline]
+    
     pub fn headers_mut(&mut self) -> &mut HeaderMap<HeaderValue> {
         &mut self.head.headers
     }
@@ -375,7 +375,7 @@ impl<T> Response<T> {
     /// let response: Response<()> = Response::default();
     /// assert!(response.extensions().get::<i32>().is_none());
     /// ```
-    #[inline]
+    
     pub fn extensions(&self) -> &Extensions {
         &self.head.extensions
     }
@@ -391,7 +391,7 @@ impl<T> Response<T> {
     /// response.extensions_mut().insert("hello");
     /// assert_eq!(response.extensions().get(), Some(&"hello"));
     /// ```
-    #[inline]
+    
     pub fn extensions_mut(&mut self) -> &mut Extensions {
         &mut self.head.extensions
     }
@@ -405,7 +405,7 @@ impl<T> Response<T> {
     /// let response: Response<String> = Response::default();
     /// assert!(response.body().is_empty());
     /// ```
-    #[inline]
+    
     pub fn body(&self) -> &T {
         &self.body
     }
@@ -420,7 +420,7 @@ impl<T> Response<T> {
     /// response.body_mut().push_str("hello world");
     /// assert!(!response.body().is_empty());
     /// ```
-    #[inline]
+    
     pub fn body_mut(&mut self) -> &mut T {
         &mut self.body
     }
@@ -435,7 +435,7 @@ impl<T> Response<T> {
     /// let body = response.into_body();
     /// assert_eq!(body, 10);
     /// ```
-    #[inline]
+    
     pub fn into_body(self) -> T {
         self.body
     }
@@ -450,7 +450,7 @@ impl<T> Response<T> {
     /// let (parts, body) = response.into_parts();
     /// assert_eq!(parts.status, StatusCode::OK);
     /// ```
-    #[inline]
+    
     pub fn into_parts(self) -> (Parts, T) {
         (self.head, self.body)
     }
@@ -469,7 +469,7 @@ impl<T> Response<T> {
     /// });
     /// assert_eq!(mapped_response.body(), &"some string".as_bytes());
     /// ```
-    #[inline]
+    
     pub fn map<F, U>(self, f: F) -> Response<U>
     where
         F: FnOnce(T) -> U,
@@ -482,7 +482,7 @@ impl<T> Response<T> {
 }
 
 impl<T: Default> Default for Response<T> {
-    #[inline]
+    
     fn default() -> Response<T> {
         Response::new(T::default())
     }
@@ -539,7 +539,7 @@ impl Builder {
     ///     .body(())
     ///     .unwrap();
     /// ```
-    #[inline]
+    
     pub fn new() -> Builder {
         Builder::default()
     }
@@ -775,7 +775,7 @@ impl Builder {
 }
 
 impl Default for Builder {
-    #[inline]
+    
     fn default() -> Builder {
         Builder {
             inner: Ok(Parts::new()),

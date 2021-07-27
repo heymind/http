@@ -56,7 +56,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_static("hello");
     /// assert_eq!(val, "hello");
     /// ```
-    #[inline]
+    
     pub fn from_static(src: &'static str) -> HeaderValue {
         let bytes = src.as_bytes();
         for &b in bytes {
@@ -96,7 +96,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_str("\n");
     /// assert!(val.is_err());
     /// ```
-    #[inline]
+    
     pub fn from_str(src: &str) -> Result<HeaderValue, InvalidHeaderValue> {
         HeaderValue::try_from_generic(src, |s| Bytes::copy_from_slice(s.as_bytes()))
     }
@@ -113,7 +113,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_name(ACCEPT);
     /// assert_eq!(val, HeaderValue::from_bytes(b"accept").unwrap());
     /// ```
-    #[inline]
+    
     pub fn from_name(name: HeaderName) -> HeaderValue {
         name.into()
     }
@@ -142,7 +142,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_bytes(b"\n");
     /// assert!(val.is_err());
     /// ```
-    #[inline]
+    
     pub fn from_bytes(src: &[u8]) -> Result<HeaderValue, InvalidHeaderValue> {
         HeaderValue::try_from_generic(src, Bytes::copy_from_slice)
     }
@@ -246,7 +246,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_static("hello");
     /// assert_eq!(val.len(), 5);
     /// ```
-    #[inline]
+    
     pub fn len(&self) -> usize {
         self.as_ref().len()
     }
@@ -263,7 +263,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_static("hello");
     /// assert!(!val.is_empty());
     /// ```
-    #[inline]
+    
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
@@ -277,7 +277,7 @@ impl HeaderValue {
     /// let val = HeaderValue::from_static("hello");
     /// assert_eq!(val.as_bytes(), b"hello");
     /// ```
-    #[inline]
+    
     pub fn as_bytes(&self) -> &[u8] {
         self.as_ref()
     }
@@ -296,7 +296,7 @@ impl HeaderValue {
     /// val.set_sensitive(false);
     /// assert!(!val.is_sensitive());
     /// ```
-    #[inline]
+    
     pub fn set_sensitive(&mut self, val: bool) {
         self.is_sensitive = val;
     }
@@ -327,14 +327,14 @@ impl HeaderValue {
     /// val.set_sensitive(false);
     /// assert!(!val.is_sensitive());
     /// ```
-    #[inline]
+    
     pub fn is_sensitive(&self) -> bool {
         self.is_sensitive
     }
 }
 
 impl AsRef<[u8]> for HeaderValue {
-    #[inline]
+    
     fn as_ref(&self) -> &[u8] {
         self.inner.as_ref()
     }
@@ -369,7 +369,7 @@ impl fmt::Debug for HeaderValue {
 }
 
 impl From<HeaderName> for HeaderValue {
-    #[inline]
+    
     fn from(h: HeaderName) -> HeaderValue {
         HeaderValue {
             inner: h.into_bytes(),
@@ -484,14 +484,14 @@ mod from_header_name_tests {
 impl FromStr for HeaderValue {
     type Err = InvalidHeaderValue;
 
-    #[inline]
+    
     fn from_str(s: &str) -> Result<HeaderValue, Self::Err> {
         HeaderValue::from_str(s)
     }
 }
 
 impl<'a> From<&'a HeaderValue> for HeaderValue {
-    #[inline]
+    
     fn from(t: &'a HeaderValue) -> Self {
         t.clone()
     }
@@ -500,7 +500,7 @@ impl<'a> From<&'a HeaderValue> for HeaderValue {
 impl<'a> TryFrom<&'a str> for HeaderValue {
     type Error = InvalidHeaderValue;
 
-    #[inline]
+    
     fn try_from(t: &'a str) -> Result<Self, Self::Error> {
         t.parse()
     }
@@ -508,7 +508,7 @@ impl<'a> TryFrom<&'a str> for HeaderValue {
 
 impl<'a> TryFrom<&'a String> for HeaderValue {
     type Error = InvalidHeaderValue;
-    #[inline]
+    
     fn try_from(s: &'a String) -> Result<Self, Self::Error> {
         Self::from_bytes(s.as_bytes())
     }
@@ -517,7 +517,7 @@ impl<'a> TryFrom<&'a String> for HeaderValue {
 impl<'a> TryFrom<&'a [u8]> for HeaderValue {
     type Error = InvalidHeaderValue;
 
-    #[inline]
+    
     fn try_from(t: &'a [u8]) -> Result<Self, Self::Error> {
         HeaderValue::from_bytes(t)
     }
@@ -526,7 +526,7 @@ impl<'a> TryFrom<&'a [u8]> for HeaderValue {
 impl TryFrom<String> for HeaderValue {
     type Error = InvalidHeaderValue;
 
-    #[inline]
+    
     fn try_from(t: String) -> Result<Self, Self::Error> {
         HeaderValue::from_shared(t.into())
     }
@@ -535,7 +535,7 @@ impl TryFrom<String> for HeaderValue {
 impl TryFrom<Vec<u8>> for HeaderValue {
     type Error = InvalidHeaderValue;
 
-    #[inline]
+    
     fn try_from(vec: Vec<u8>) -> Result<Self, Self::Error> {
         HeaderValue::from_shared(vec.into())
     }
@@ -559,7 +559,7 @@ fn is_visible_ascii(b: u8) -> bool {
     b >= 32 && b < 127 || b == b'\t'
 }
 
-#[inline]
+
 fn is_valid(b: u8) -> bool {
     b >= 32 && b != 127 || b == b'\t'
 }
@@ -591,7 +591,7 @@ impl Error for ToStrError {}
 // ===== PartialEq / PartialOrd =====
 
 impl PartialEq for HeaderValue {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         self.inner == other.inner
     }
@@ -600,112 +600,112 @@ impl PartialEq for HeaderValue {
 impl Eq for HeaderValue {}
 
 impl PartialOrd for HeaderValue {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
 impl Ord for HeaderValue {
-    #[inline]
+    
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
 impl PartialEq<str> for HeaderValue {
-    #[inline]
+    
     fn eq(&self, other: &str) -> bool {
         self.inner == other.as_bytes()
     }
 }
 
 impl PartialEq<[u8]> for HeaderValue {
-    #[inline]
+    
     fn eq(&self, other: &[u8]) -> bool {
         self.inner == other
     }
 }
 
 impl PartialOrd<str> for HeaderValue {
-    #[inline]
+    
     fn partial_cmp(&self, other: &str) -> Option<cmp::Ordering> {
         (*self.inner).partial_cmp(other.as_bytes())
     }
 }
 
 impl PartialOrd<[u8]> for HeaderValue {
-    #[inline]
+    
     fn partial_cmp(&self, other: &[u8]) -> Option<cmp::Ordering> {
         (*self.inner).partial_cmp(other)
     }
 }
 
 impl PartialEq<HeaderValue> for str {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         *other == *self
     }
 }
 
 impl PartialEq<HeaderValue> for [u8] {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         *other == *self
     }
 }
 
 impl PartialOrd<HeaderValue> for str {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         self.as_bytes().partial_cmp(other.as_bytes())
     }
 }
 
 impl PartialOrd<HeaderValue> for [u8] {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         self.partial_cmp(other.as_bytes())
     }
 }
 
 impl PartialEq<String> for HeaderValue {
-    #[inline]
+    
     fn eq(&self, other: &String) -> bool {
         *self == &other[..]
     }
 }
 
 impl PartialOrd<String> for HeaderValue {
-    #[inline]
+    
     fn partial_cmp(&self, other: &String) -> Option<cmp::Ordering> {
         self.inner.partial_cmp(other.as_bytes())
     }
 }
 
 impl PartialEq<HeaderValue> for String {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         *other == *self
     }
 }
 
 impl PartialOrd<HeaderValue> for String {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         self.as_bytes().partial_cmp(other.as_bytes())
     }
 }
 
 impl<'a> PartialEq<HeaderValue> for &'a HeaderValue {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         **self == *other
     }
 }
 
 impl<'a> PartialOrd<HeaderValue> for &'a HeaderValue {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         (**self).partial_cmp(other)
     }
@@ -715,7 +715,7 @@ impl<'a, T: ?Sized> PartialEq<&'a T> for HeaderValue
 where
     HeaderValue: PartialEq<T>,
 {
-    #[inline]
+    
     fn eq(&self, other: &&'a T) -> bool {
         *self == **other
     }
@@ -725,21 +725,21 @@ impl<'a, T: ?Sized> PartialOrd<&'a T> for HeaderValue
 where
     HeaderValue: PartialOrd<T>,
 {
-    #[inline]
+    
     fn partial_cmp(&self, other: &&'a T) -> Option<cmp::Ordering> {
         self.partial_cmp(*other)
     }
 }
 
 impl<'a> PartialEq<HeaderValue> for &'a str {
-    #[inline]
+    
     fn eq(&self, other: &HeaderValue) -> bool {
         *other == *self
     }
 }
 
 impl<'a> PartialOrd<HeaderValue> for &'a str {
-    #[inline]
+    
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
         self.as_bytes().partial_cmp(other.as_bytes())
     }

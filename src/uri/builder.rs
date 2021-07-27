@@ -27,7 +27,7 @@ impl Builder {
     ///     .build()
     ///     .unwrap();
     /// ```
-    #[inline]
+    
     pub fn new() -> Builder {
         Builder::default()
     }
@@ -145,7 +145,7 @@ impl Builder {
 }
 
 impl Default for Builder {
-    #[inline]
+    
     fn default() -> Builder {
         Builder {
             parts: Ok(Parts::default()),
