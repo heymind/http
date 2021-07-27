@@ -60,15 +60,22 @@ impl Extensions {
     /// assert_eq!(ext.insert(9i32), Some(5i32));
     /// ```
     pub fn insert<T: Send + Sync + 'static>(&mut self, val: T) -> Option<T> {
-        self.map
-            .get_or_insert_with(|| Box::new(HashMap::default()))
-            .insert(TypeId::of::<T>(), Box::new(val))
-            .and_then(|boxed| {
-                (boxed as Box<dyn Any + 'static>)
-                    .downcast()
-                    .ok()
-                    .map(|boxed| *boxed)
-            })
+        #[inline(never)]
+        fn insert(
+            this: &mut Extensions,
+            key: TypeId,
+            val: Box<dyn Any + Send + Sync>,
+        ) -> Option<Box<dyn Any + Send + Sync>> {
+            this.map
+                .get_or_insert_with(|| Box::new(HashMap::default()))
+                .insert(key, val)
+        }
+        insert(self, TypeId::of::<T>(), Box::new(val)).and_then(|boxed| {
+            (boxed as Box<dyn Any + 'static>)
+                .downcast()
+                .ok()
+                .map(|boxed| *boxed)
+        })
     }
 
     /// Get a reference to a type previously inserted on this `Extensions`.
@@ -84,10 +91,14 @@ impl Extensions {
     /// assert_eq!(ext.get::<i32>(), Some(&5i32));
     /// ```
     pub fn get<T: Send + Sync + 'static>(&self) -> Option<&T> {
-        self.map
-            .as_ref()
-            .and_then(|map| map.get(&TypeId::of::<T>()))
-            .and_then(|boxed| (&**boxed as &(dyn Any + 'static)).downcast_ref())
+        #[inline(never)]
+        fn get(this: &Extensions, key: TypeId) -> Option<&(dyn Any + 'static)> {
+            this.map
+                .as_ref()
+                .and_then(|map| map.get(&key))
+                .map(|boxed| &**boxed as &(dyn Any + 'static))
+        }
+        get(self, TypeId::of::<T>()).and_then(|v| v.downcast_ref())
     }
 
     /// Get a mutable reference to a type previously inserted on this `Extensions`.
@@ -103,10 +114,14 @@ impl Extensions {
     /// assert_eq!(ext.get::<String>().unwrap(), "Hello World");
     /// ```
     pub fn get_mut<T: Send + Sync + 'static>(&mut self) -> Option<&mut T> {
-        self.map
-            .as_mut()
-            .and_then(|map| map.get_mut(&TypeId::of::<T>()))
-            .and_then(|boxed| (&mut **boxed as &mut (dyn Any + 'static)).downcast_mut())
+        #[inline(never)]
+        fn get_mut(this: &mut Extensions, key: TypeId) -> Option<&mut (dyn Any + 'static)> {
+            this.map
+                .as_mut()
+                .and_then(|map| map.get_mut(&key))
+                .map(|boxed| &mut **boxed as &mut (dyn Any + 'static))
+        }
+        get_mut(self, TypeId::of::<T>()).and_then(|boxed| boxed.downcast_mut())
     }
 
     /// Remove a type from this `Extensions`.
@@ -123,15 +138,16 @@ impl Extensions {
     /// assert!(ext.get::<i32>().is_none());
     /// ```
     pub fn remove<T: Send + Sync + 'static>(&mut self) -> Option<T> {
-        self.map
-            .as_mut()
-            .and_then(|map| map.remove(&TypeId::of::<T>()))
-            .and_then(|boxed| {
-                (boxed as Box<dyn Any + 'static>)
-                    .downcast()
-                    .ok()
-                    .map(|boxed| *boxed)
-            })
+        #[inline(never)]
+        fn remove(this: &mut Extensions, key: TypeId) -> Option<Box<dyn Any + Send + Sync>> {
+            this.map.as_mut().and_then(|map| map.remove(&key))
+        }
+        remove(self, TypeId::of::<T>()).and_then(|boxed| {
+            (boxed as Box<dyn Any + 'static>)
+                .downcast()
+                .ok()
+                .map(|boxed| *boxed)
+        })
     }
 
     /// Clear the `Extensions` of all inserted extensions.
